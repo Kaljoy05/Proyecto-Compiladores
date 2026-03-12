@@ -12,14 +12,20 @@ El objetivo de esta primera fase es el **Análisis Léxico**. El programa lee un
 
 📁 simpliscore/
  ├── 📄 go.mod           # Definición del módulo de Go
+ 
  ├── 📄 main.go          # Punto de entrada y lectura de archivos
+ 
  ├── 📄 pruebas.txt      # Archivo de pruebas con casos de uso del DSL
+ 
  ├── 📄 README.md        # Documentación del proyecto
- │
+ 
  ├── 📁 token/
+
  │    └── 📄 token.go    # Diccionario de datos y definición de la estructura Token
- │
+
+ 
  └── 📁 lexer/
+ 
       └── 📄 lexer.go    # Motor del Scanner (lectura por caracteres y evaluación)
 
 
