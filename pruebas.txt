@@ -1,15 +1,11 @@
-tempo 120;
+tempo en 120;
 
-nota do negra;
-nota fa sostenido corchea;
+nota do 4 negra;
+nota fa sostenido 5 corchea;
 nota si bemol blanca;
+nota la 3 redonda;
 
 silencio redonda;
 
-luego acorde sol mayor redonda;
+luego acorde sol 4 mayor redonda;
 acorde re menor blanca;
-
-NOTA LA NEGRA;
-nOtA mI cOrChEa;
-
-insertar nota do octava 4 en negra;

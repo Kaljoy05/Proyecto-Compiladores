@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 	"simpliscore/lexer"
-	"simpliscore/token"
+	"simpliscore/parser" // ¡No olvides importar tu nuevo paquete parser!
 )
 
 func main() {
@@ -23,15 +23,32 @@ func main() {
 		return
 	}
 
-	fmt.Printf("SimpliScore: Analizando archivo '%s' \n", nombreArchivo)
-	fmt.Println("-------------------------------------------------------------")
+	fmt.Printf("SimpliScore: Analizando sintaxis de '%s' \n", nombreArchivo)
 
 	codigoFuente := string(contenido)
 	l := lexer.New(codigoFuente)
+	p := parser.New(l)
 
-	fmt.Println("--- INICIO DE TOKENIZACIÓN ---")
-	for tok := l.NextToken(); tok.Type != token.EOF; tok = l.NextToken() {
-		fmt.Printf("{ Tipo: %-15s | Literal: '%s' }\n", tok.Type, tok.Literal)
+	// Iniciamos el análisis sintáctico
+	program := p.ParseProgram()
+
+	// 1. Verificamos si el usuario cometió errores de sintaxis
+	if len(p.Errors()) != 0 {
+		fmt.Println("Se encontraron errores de sintaxis en el archivo:")
+		for _, msg := range p.Errors() {
+			fmt.Printf("\t- %s\n", msg)
+		}
+		return
 	}
-	fmt.Println("--- FIN DE TOKENIZACIÓN ---")
+
+	// 2. Si no hay errores, mostramos el AST resultante
+	fmt.Println("Análisis sintáctico exitoso El Árbol generado es:")
+	fmt.Println("--- INICIO DE INSTRUCCIONES ---")
+
+	for i, stmt := range program.Statements {
+		// Al llamar a String() estamos usando los métodos que definimos en ast.go
+		fmt.Printf("Instrucción %d: %s\n", i+1, stmt.String())
+	}
+
+	fmt.Println("--- FIN DE INSTRUCCIONES ---")
 }
