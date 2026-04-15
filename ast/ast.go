@@ -40,7 +40,7 @@ type NotaStatement struct {
 	Token      token.Token
 	Nota       token.Token
 	Alteracion token.Token
-	Octava     token.Token // Soporte para el número de octava
+	Octava     token.Token 
 	Duracion   token.Token
 }
 
@@ -59,11 +59,10 @@ func (ns *NotaStatement) String() string {
 	return out.String()
 }
 
-// NODO PARA ACORDES
 type AcordeStatement struct {
 	Token    token.Token
 	Raiz     token.Token
-	Octava   token.Token // Soporte para la octava base del acorde
+	Octava   token.Token 
 	Tipo     token.Token
 	Duracion token.Token
 }
@@ -80,7 +79,6 @@ func (as *AcordeStatement) String() string {
 	return out.String()
 }
 
-// NODO PARA SILENCIOS
 type SilencioStatement struct {
 	Token    token.Token
 	Duracion token.Token
@@ -92,7 +90,6 @@ func (ss *SilencioStatement) String() string {
 	return ss.TokenLiteral() + " " + ss.Duracion.Literal + ";"
 }
 
-// NODO PARA TEMPO
 type TempoStatement struct {
 	Token token.Token
 	Valor string

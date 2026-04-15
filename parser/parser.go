@@ -83,13 +83,13 @@ func (p *Parser) parseNotaStatement() *ast.NotaStatement {
 	stmt.Nota = p.curToken
 	p.nextToken()
 
-	// Alteración opcional
+
 	if p.curToken.Type == token.SOSTENIDO || p.curToken.Type == token.BEMOL {
 		stmt.Alteracion = p.curToken
 		p.nextToken()
 	}
 
-	// Octava opcional (número)
+	
 	if p.curToken.Type == token.INT {
 		stmt.Octava = p.curToken
 		p.nextToken()

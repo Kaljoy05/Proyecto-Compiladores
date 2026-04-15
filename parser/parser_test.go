@@ -7,7 +7,6 @@ import (
 )
 
 func TestParseNotaStatement(t *testing.T) {
-	// Definimos varios escenarios para poner a prueba el parser
 	tests := []struct {
 		input              string
 		expectedNota       string
@@ -18,7 +17,6 @@ func TestParseNotaStatement(t *testing.T) {
 		{"nota fa sostenido blanca;", "fa", "sostenido", "blanca"},
 		{"nota si bemol corchea;", "si", "bemol", "corchea"},
 		{"nota sol redonda;", "sol", "", "redonda"},
-		// Opcional: Probar con mayúsculas si tu lexer ya lo soporta bien
 		{"nota RE blanca;", "RE", "", "blanca"},
 	}
 
@@ -27,7 +25,6 @@ func TestParseNotaStatement(t *testing.T) {
 		p := New(l)
 		program := p.ParseProgram()
 
-		// Verificamos que no haya errores de sintaxis
 		checkParserErrors(t, p)
 
 		if program == nil {
@@ -61,7 +58,6 @@ func TestParseNotaStatement(t *testing.T) {
 	}
 }
 
-// Función auxiliar para imprimir los errores del parser si la prueba falla
 func checkParserErrors(t *testing.T, p *Parser) {
 	errors := p.Errors()
 	if len(errors) == 0 {
@@ -89,13 +85,11 @@ func TestParseAcordeStatement(t *testing.T) {
 		t.Fatalf("program.Statements no contiene 2 sentencias. se obtuvo=%d", len(program.Statements))
 	}
 
-	// Prueba 1: acorde sol mayor
 	acorde1 := program.Statements[0].(*ast.AcordeStatement)
 	if acorde1.Raiz.Literal != "sol" || acorde1.Tipo.Literal != "mayor" {
 		t.Errorf("Error en acorde 1. Raiz: %s, Tipo: %s", acorde1.Raiz.Literal, acorde1.Tipo.Literal)
 	}
 
-	// Prueba 2: acorde RE menor (recordando lo de las mayúsculas)
 	acorde2 := program.Statements[1].(*ast.AcordeStatement)
 	if acorde2.Raiz.Literal != "RE" || acorde2.Tipo.Literal != "menor" {
 		t.Errorf("Error en acorde 2. Raiz: %s, Tipo: %s", acorde2.Raiz.Literal, acorde2.Tipo.Literal)
@@ -116,13 +110,11 @@ func TestParseSilencioYTempo(t *testing.T) {
 		t.Fatalf("program.Statements no contiene 2 sentencias. se obtuvo=%d", len(program.Statements))
 	}
 
-	// Prueba Silencio
 	silencio := program.Statements[0].(*ast.SilencioStatement)
 	if silencio.Duracion.Literal != "blanca" {
 		t.Errorf("Error en silencio. Duracion: %s", silencio.Duracion.Literal)
 	}
 
-	// Prueba Tempo
 	tempo := program.Statements[1].(*ast.TempoStatement)
 	if tempo.Valor != "120" {
 		t.Errorf("Error en tempo. Valor: %s", tempo.Valor)
