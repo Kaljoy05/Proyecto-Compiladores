@@ -1,11 +1,20 @@
-tempo en 120;
+// --- HIMNO DE LA ALEGRÍA ---
+Tempo en 120
 
-nota do 4 negra;
-nota fa sostenido 5 corchea;
-nota si bemol blanca;
-nota la 3 redonda;
+// Primer compás
+Nota mi negra; luego nota mi negra
+luego nota fa negra; luego nota sol negra
 
-silencio redonda;
+// Segundo compás
+LUEGO nota sol negra; luego nota fa negra
+luego nota mi negra; luego nota re negra
 
-luego acorde sol 4 mayor redonda;
-acorde re menor blanca;
+// Tercer compás
+LUEGO nota do negra; luego nota do negra
+luego nota re negra; luego nota mi negra
+
+// Cuarto compás (Cierre)
+LUEGO nota mi blanca; luego nota re blanca
+
+
+

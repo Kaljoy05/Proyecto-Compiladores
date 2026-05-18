@@ -1,44 +1,99 @@
-# Proyecto-Compiladores
-# SimpliScore: Transpilador de Lenguaje Musical a LilyPond
+# SimpliScore 🎵
+**Transpilador de Lenguaje Musical a LilyPond**
 
-**Fase Actual:** Fase 2 - Analizador Sintáctico (Parser) y AST 100% Funcional.
+**Fase Actual:** Proyecto 100% Funcional (Fase Léxica, Sintáctica, Generación de Código y Orquestación).
 
 ## Descripción del Proyecto
-SimpliScore es un transpilador escrito en Go diseñado para traducir un Lenguaje de Dominio Específico (DSL) basado en notación musical en español, hacia el lenguaje de grabado musical profesional **LilyPond** (`.ly`).
+SimpliScore es un transpilador escrito en Go (Golang) diseñado para traducir un Lenguaje de Dominio Específico (DSL) basado en notación musical natural en español, hacia el lenguaje de marcado técnico y profesional **LilyPond** (`.ly`).
 
-El proyecto ha superado el **Análisis Léxico** y actualmente implementa un **Análisis Sintáctico** completo. El programa lee el código fuente, genera los tokens y los agrupa lógicamente para construir un **Árbol de Sintaxis Abstracta (AST)**. El parser es capaz de entender comandos estructurados de notas (con octavas y alteraciones opcionales), acordes con duraciones, silencios y métricas de tempo, detectando errores gramaticales e ignorando inteligentemente el "azúcar sintáctica" (como la palabra `luego`) para mantener el árbol de compilación limpio.
+El objetivo principal del proyecto es ofrecer una experiencia de usuario (DX) fluida y perdonadora para músicos y compositores, abstrayendo la compleja curva de aprendizaje de LilyPond. El programa lee el código fuente, construye un **Árbol de Sintaxis Abstracta (AST)** tolerante a fallos, y finalmente automatiza la generación de partituras (PDF) y pistas de audio (MIDI) interactuando directamente con el sistema operativo.
 
-## Estructura del Proyecto
+## ✨ Características Principales
+* **Sintaxis en Español y Natural:** Redacción de partituras como si fuera un dictado (ej. `Nota do aguda negra;`).
+* **Tolerancia a Fallos:** El analizador léxico es insensible a mayúsculas/minúsculas.
+* **Azúcar Sintáctica:** Uso de conectores opcionales como `LUEGO` para mejorar la fluidez de lectura (el AST los ignora para mantenerse puro).
+* **Punto y Coma Opcional:** Soporte para separar instrucciones con saltos de línea.
+* **Ejecución Zero-Config:** Orquestación automática de subprocesos (`os/exec`). Genera el PDF y el MIDI sin que el usuario deba interactuar con herramientas externas.
+
+## 🗂️ Estructura del Proyecto
 
 📁 simpliscore/
  ├── 📄 go.mod           # Definición del módulo de Go
- ├── 📄 main.go          # Punto de entrada y ejecución del compilador
- ├── 📄 pruebas.txt      # Archivo con casos de uso válidos e inválidos del DSL
+ ├── 📄 main.go          # Punto de entrada y orquestador del compilador
+ ├── 📄 prueba.txt       # Archivo con casos de uso del DSL (Input)
  ├── 📄 README.md        # Documentación del proyecto
  │
  ├── 📁 token/
  │    └── 📄 token.go    # Diccionario de datos y definición de la estructura Token
  │
  ├── 📁 lexer/
- │    └── 📄 lexer.go    # Motor del Scanner (tokenización del texto)
+ │    └── 📄 lexer.go    # Motor del Scanner (tokenización y normalización del texto)
  │
  ├── 📁 ast/
- │    ├── 📄 ast.go      # Definición de los Nodos y Estructuras del Árbol Sintáctico
- │    └── 📄 ast_test.go # Pruebas unitarias de representación del AST
+ │    └── 📄 ast.go      # Definición de los Nodos y Estructuras del Árbol Sintáctico
  │
- └── 📁 parser/
-      ├── 📄 parser.go   # Analizador Sintáctico para construir el AST
-      └── 📄 parser_test.go # Pruebas unitarias de las sentencias musicales
+ ├── 📁 parser/
+ │    └── 📄 parser.go   # Analizador Sintáctico Descendente para construir el AST
+ │
+ └── 📁 generator/
+      └── 📄 generator.go # Backend: Traducción a LilyPond e inyección de plantillas
 
-## Requisitos
-* Tener instalado **Go 1.18** o superior.
+## ⚙️ Requisitos Previos e Instalación
 
-## ¿Cómo ejecutar el Analizador Sintáctico?
+Para ejecutar SimpliScore, necesitas tener instalados **Go** y **LilyPond**.
 
-El programa está diseñado para ejecutarse desde la terminal pasándole como argumento el archivo de texto que contiene el código fuente musical. Al ejecutarlo, validará las reglas de la gramática e imprimirá la estructura lógica del AST generado, o en su defecto, reportará los errores de sintaxis exactos.
+### 1. Instalar Go
+Asegúrate de tener Go instalado (versión 1.20 o superior).
 
-1. Abre la terminal en la raíz del proyecto.
-2. Ejecuta el siguiente comando:
+### 2. Instalar LilyPond (¡Importante!)
+El transpilador depende del motor externo de LilyPond para renderizar el resultado final. 
 
+#### 🐧 Para Linux (Ubuntu / Debian / WSL):
 ```bash
-go run main.go pruebas.txt
+sudo apt update
+sudo apt install lilypond
+
+Para Windows:
+Descarga la versión .zip desde la página oficial de LilyPond.
+
+Extrae la carpeta en tu disco duro (ej. C:\lilypond-2.24.1).
+
+Agregar al PATH (Obligatorio):
+
+Abre "Variables de entorno" en Windows.
+
+En "Variables del sistema", edita la variable Path.
+
+Agrega la ruta completa hacia la carpeta bin de LilyPond (ej. C:\lilypond-2.24.1\bin).
+
+Abre una nueva terminal para que los cambios apliquen.
+
+🚀 Uso
+Crea un archivo de texto (ej. prueba.txt) y escribe tu composición.
+
+Abre la terminal en la raíz del proyecto y ejecuta: go run main.go prueba.txt
+
+SimpliScore escaneará el texto, validará la gramática, transpilara el código a .ly y ejecutará LilyPond automáticamente para generar prueba.pdf y prueba.midi en tu carpeta.
+
+📖 Guía Rápida del Lenguaje
+El lenguaje soporta comentarios utilizando //.
+
+Estructuras Básicas:
+
+Tempo en [X]: Define la velocidad de la pieza.
+
+Nota [altura] [octava opcional] [duración]: Define una nota individual.
+
+Acorde [altura] [mayor/menor] [duración]: Define un acorde.
+
+Silencio [duración]: Define una pausa.
+
+Diccionario Permitido:
+
+Alturas: do, re, mi, fa, sol, la, si.
+
+Alteraciones (Opcionales): sostenido, bemol.
+
+Octavas (Opcionales): aguda, grave.
+
+Duraciones: redonda, blanca, negra, corchea.

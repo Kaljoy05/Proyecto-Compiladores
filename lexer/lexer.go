@@ -1,6 +1,9 @@
 package lexer
 
-import "simpliscore/token"
+import (
+	"simpliscore/token"
+	"strings"
+)
 
 type Lexer struct {
 	input        string
@@ -17,7 +20,7 @@ func New(input string) *Lexer {
 
 func (l *Lexer) readChar() {
 	if l.readPosition >= len(l.input) {
-		l.ch = 0 // ASCII para NUL
+		l.ch = 0
 	} else {
 		l.ch = l.input[l.readPosition]
 	}
@@ -56,6 +59,20 @@ func isDigit(ch byte) bool {
 	return '0' <= ch && ch <= '9'
 }
 
+func (l *Lexer) peekChar() byte {
+	if l.readPosition >= len(l.input) {
+		return 0
+	}
+	return l.input[l.readPosition]
+}
+
+func (l *Lexer) skipComment() {
+	for l.ch != '\n' && l.ch != 0 {
+		l.readChar()
+	}
+	l.skipWhitespace()
+}
+
 func (l *Lexer) NextToken() token.Token {
 	var tok token.Token
 
@@ -64,12 +81,20 @@ func (l *Lexer) NextToken() token.Token {
 	switch l.ch {
 	case ';':
 		tok = token.Token{Type: token.PUNTO_COMA, Literal: string(l.ch)}
+	case '/':
+		if l.peekChar() == '/' {
+			l.skipComment()
+			return l.NextToken()
+		} else {
+			tok = token.Token{Type: token.ILLEGAL, Literal: string(l.ch)}
+		}
 	case 0:
 		tok.Literal = ""
 		tok.Type = token.EOF
 	default:
 		if isLetter(l.ch) {
-			tok.Literal = l.readIdentifier()
+			ident := l.readIdentifier()
+			tok.Literal = strings.ToLower(ident)
 			tok.Type = token.LookupIdent(tok.Literal)
 			return tok
 		} else if isDigit(l.ch) {

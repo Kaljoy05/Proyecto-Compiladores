@@ -5,7 +5,6 @@ import (
 	"simpliscore/token"
 )
 
-// Interfaces base
 type Node interface {
 	TokenLiteral() string
 	String() string
@@ -35,12 +34,11 @@ func (p *Program) String() string {
 	return out.String()
 }
 
-// NODO PARA NOTAS
 type NotaStatement struct {
 	Token      token.Token
 	Nota       token.Token
 	Alteracion token.Token
-	Octava     token.Token 
+	Octava     token.Token
 	Duracion   token.Token
 }
 
@@ -62,7 +60,7 @@ func (ns *NotaStatement) String() string {
 type AcordeStatement struct {
 	Token    token.Token
 	Raiz     token.Token
-	Octava   token.Token 
+	Octava   token.Token
 	Tipo     token.Token
 	Duracion token.Token
 }

@@ -22,6 +22,8 @@ const (
 	TEMPO    = "TEMPO"
 	EN       = "EN"
 	LUEGO    = "LUEGO"
+	AGUDA    = "AGUDA"
+	GRAVE    = "GRAVE"
 
 	DO  = "DO"
 	RE  = "RE"
@@ -50,6 +52,8 @@ var keywords = map[string]TokenType{
 	"tempo":    TEMPO,
 	"en":       EN,
 	"luego":    LUEGO,
+	"aguda":    AGUDA,
+	"grave":    GRAVE,
 
 	"do":  DO,
 	"re":  RE,
